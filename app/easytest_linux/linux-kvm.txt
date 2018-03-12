@@ -1,0 +1,40 @@
+1 查看CPU是否支持KVM
+
+ egrep "(svm|vmx)" /proc/cpuinfo
+  有结果输出，如下图：
+
+
+
+2 安装KVM及相关依赖包
+
+sudo apt-get install qemu-kvm
+sudo apt-get install qemu
+sudo apt-get install virt-manager
+sudo apt-get install virt-viewer 
+sudo apt-get install libvirt-bin 
+sudo apt-get install bridge-utils
+3 启用桥接网络
+
+   先备份一套原有配置
+
+sudo cp /etc/network/interfaces /etc/network/interfaces-bak
+   对/etc/network/interfaces 配置文件进行更改
+
+sudo gedit /etc/network/interfaces
+# Enabing Bridge networking br0 interface
+auto br0
+iface br0 inet static
+address 192.168.1.130
+network 192.168.1.0
+netmask 255.255.255.0
+broadcast 192.168.1.255
+gateway 192.168.1.1
+dns-nameservers 223.5.5.5
+bridge_ports eth0
+bridge_stp off
+   保存后退出，然后重启系统。
+
+sudo reboot
+4 启动KVM虚拟系统管理器
+
+ sudo virt-manager
